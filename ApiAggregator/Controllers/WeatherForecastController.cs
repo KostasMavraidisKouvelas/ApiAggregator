@@ -22,8 +22,7 @@ namespace ApiAggregator.Controllers
         [HttpGet(Name = "GetWeatherForecast")]
         public async Task<IActionResult> Get()
         {
-            await _operations.GetWeather();
-            return Ok();
+            return Ok(await _operations.GetWeather());
         }
     }
 }

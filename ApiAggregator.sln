@@ -9,6 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiAggregator.Api", "ApiAgg
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiAggregator.Application", "ApiAggregator.Application\ApiAggregator.Application.csproj", "{17D3DAFE-481D-45F6-9263-434C39ED5A9C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0D275008-E157-4022-A27D-D91CBACB4F81} = {0D275008-E157-4022-A27D-D91CBACB4F81}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiAggregator.DTO", "ApiAggregator.DTO\ApiAggregator.DTO.csproj", "{0D275008-E157-4022-A27D-D91CBACB4F81}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,6 +29,10 @@ Global
 		{17D3DAFE-481D-45F6-9263-434C39ED5A9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17D3DAFE-481D-45F6-9263-434C39ED5A9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17D3DAFE-481D-45F6-9263-434C39ED5A9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D275008-E157-4022-A27D-D91CBACB4F81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D275008-E157-4022-A27D-D91CBACB4F81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D275008-E157-4022-A27D-D91CBACB4F81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D275008-E157-4022-A27D-D91CBACB4F81}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
