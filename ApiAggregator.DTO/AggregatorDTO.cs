@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace ApiAggregator.DTO
 {
-    public class NewDTO
+    public class AggregatorDto
     {
-
+        public NewsResponseDto NewsResponseDto { get; set; }
+        public WeatherResponseDto WeatherResponseDto { get; set; }
     }
 }

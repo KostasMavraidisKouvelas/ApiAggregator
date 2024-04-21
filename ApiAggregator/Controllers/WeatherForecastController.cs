@@ -22,7 +22,7 @@ namespace ApiAggregator.Controllers
         [HttpGet(Name = "GetWeatherForecast")]
         public async Task<IActionResult> Get()
         {
-            return Ok(await _operations.GetWeather());
+            return Ok(await _operations.GetAggregatedDataAsync());
         }
     }
 }
