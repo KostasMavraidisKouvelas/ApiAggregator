@@ -31,14 +31,14 @@ namespace ApiAggregator.Application
 
         public async Task<AggregatorDto> GetAggregatedDataAsync()
         {
-            var x =  this.GetWeatherAsync();
-            var  y =  this.GetNewsAsync();
+            var weatherRersponse =  this.GetWeatherAsync();
+            var  newsResponse =  this.GetNewsAsync();
 
-            await Task.WhenAll(x, y);
+            await Task.WhenAll(weatherRersponse, newsResponse);
             return new AggregatorDto
             {
-                NewsResponseDto = y.Result,
-                WeatherResponseDto = x.Result
+                NewsResponseDto = newsResponse.Result,
+                WeatherResponseDto = weatherRersponse.Result
             };
         }
     }
