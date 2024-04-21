@@ -13,6 +13,8 @@ namespace ApiAggregator.Application
 
         public Task<NewsResponseDto> GetNewsAsync();
 
+        public Task<List<CountryDto>> GetCountriesAsync();
+
         public Task<AggregatorDto> GetAggregatedDataAsync();
     }
 }

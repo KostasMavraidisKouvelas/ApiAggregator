@@ -2,11 +2,11 @@
 {
 
     public class WeatherResponseDto
-    {
-    public string Cod { get; set; }
-    public double Message { get; set; }
-    public int Cnt { get; set; }
-    public List<WeatherDto> List { get; set; }
+    { 
+        public string Cod { get; set; }
+        public double Message { get; set; }
+        public int Cnt { get; set; }
+        public List<WeatherDto> List { get; set; }
     }
 public class WeatherDto
     {

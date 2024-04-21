@@ -10,10 +10,10 @@ namespace ApiAggregator.DTO
     {
         public string Status { get; set; }
         public int ToTalResults { get; set; }
-        public List<NewsDto> Articles { get; set; }
+        public List<ArticlesDto> Articles { get; set; }
     }
 
-    public class NewsDto
+    public class ArticlesDto
     {
         public SourceDto Source { get; set; }
         public string Author { get; set; }

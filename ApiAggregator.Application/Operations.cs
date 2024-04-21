@@ -29,16 +29,26 @@ namespace ApiAggregator.Application
             return news;
         }
 
+        public async Task<List<CountryDto>> GetCountriesAsync()
+        {
+            var response = await _httpClient.GetAsync("https://restcountries.com/v3.1/all");
+            var json = await response.Content.ReadAsStringAsync();
+            var countries = JsonConvert.DeserializeObject<List<CountryDto>>(json);
+            return countries;
+        }
+
         public async Task<AggregatorDto> GetAggregatedDataAsync()
         {
             var weatherRersponse =  this.GetWeatherAsync();
-            var  newsResponse =  this.GetNewsAsync();
+            var newsResponse =  this.GetNewsAsync();
+            var countriesResponse =  this.GetCountriesAsync();
 
-            await Task.WhenAll(weatherRersponse, newsResponse);
+            await Task.WhenAll(weatherRersponse, newsResponse,countriesResponse);
             return new AggregatorDto
             {
-                NewsResponseDto = newsResponse.Result,
-                WeatherResponseDto = weatherRersponse.Result
+                Articles = newsResponse.Result.Articles,
+                WeatheForecasts = weatherRersponse.Result.List,
+                CountryDto = countriesResponse.Result
             };
         }
     }
