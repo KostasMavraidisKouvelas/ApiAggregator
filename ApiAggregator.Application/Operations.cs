@@ -1,5 +1,6 @@
 ﻿using ApiAggregator.Application.Filters;
 using ApiAggregator.DTO;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 
 namespace ApiAggregator.Application
@@ -7,11 +8,17 @@ namespace ApiAggregator.Application
     public class Operations : IOperations
     {
         private HttpClient _httpClient;
+        private readonly  IConfiguration _configuration;
         private const int maxRetryCount = 3;
 
-        public Operations(HttpClient httpClient)
+        public Operations(HttpClient httpClient,IConfiguration configuration)
         {
             _httpClient = httpClient;
+            _configuration = configuration;
+        }
+
+        public Operations()
+        {
         }
 
         protected virtual async Task<WeatherResponseDto> GetWeatherAsync()

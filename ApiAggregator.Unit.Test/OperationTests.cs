@@ -25,7 +25,7 @@ namespace ApiAggregator.Unit.Test
         {
             private readonly Mock<HttpClient> _httpClientMock;
 
-            public MockOperations(Mock<HttpClient> httpClientMock) : base(httpClientMock.Object)
+            public MockOperations(Mock<HttpClient> httpClientMock)
             {
                 _httpClientMock = httpClientMock;
             }

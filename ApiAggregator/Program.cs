@@ -1,4 +1,5 @@
 using ApiAggregator.Application;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,8 +9,11 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<IOperations,Operations>();
-builder.Services.AddHttpClient<IOperations,Operations>();
+builder.Services.AddScoped<IOperations, Operations>();
+builder.Services.AddHttpClient<IOperations, Operations>();
+
+// Add Microsoft Extensions Configuration
+builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 
 var app = builder.Build();
 
