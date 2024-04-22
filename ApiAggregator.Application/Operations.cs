@@ -1,4 +1,5 @@
-﻿using ApiAggregator.DTO;
+﻿using ApiAggregator.Application.Filters;
+using ApiAggregator.DTO;
 using Newtonsoft.Json;
 
 namespace ApiAggregator.Application
@@ -23,21 +24,21 @@ namespace ApiAggregator.Application
 
         public async Task<NewsResponseDto> GetNewsAsync()
         {
-            var response = await _httpClient.GetAsync("https://newsapi.org/v2/everything?q=tesla&from=2024-03-20&sortBy=publishedAt&apiKey=89ab964822464fba93a0025f8cfd7948");
+            var response = await _httpClient.GetAsync("https://newsapi.org/v2/everything?q=tesla&from=2024-03-22&sortBy=publishedAt&apiKey=89ab964822464fba93a0025f8cfd7948");
             var json = await response.Content.ReadAsStringAsync();
             var news = JsonConvert.DeserializeObject<NewsResponseDto>(json);
             return news;
         }
 
-        public async Task<List<CountryDto>> GetCountriesAsync()
+        public async Task<IEnumerable<CountryDto>> GetCountriesAsync()
         {
             var response = await _httpClient.GetAsync("https://restcountries.com/v3.1/all");
             var json = await response.Content.ReadAsStringAsync();
-            var countries = JsonConvert.DeserializeObject<List<CountryDto>>(json);
+            var countries = JsonConvert.DeserializeObject<IEnumerable<CountryDto>>(json);
             return countries;
         }
 
-        public async Task<AggregatorDto> GetAggregatedDataAsync()
+        public async Task<AggregatorDto> GetAggregatedDataAsync(AggregatorDataFilter aggregatorDataFilter)
         {
             var weatherRersponse =  this.GetWeatherAsync();
             var newsResponse =  this.GetNewsAsync();
@@ -48,7 +49,10 @@ namespace ApiAggregator.Application
             {
                 Articles = newsResponse.Result.Articles,
                 WeatheForecasts = weatherRersponse.Result.List,
-                CountryDto = countriesResponse.Result
+                CountryDto = countriesResponse.Result.
+                    FilterCountriesBy(aggregatorDataFilter.CountriesFilter)
+                    .SortCountriesBy(aggregatorDataFilter.CountriesFilter.CountriesSortBy)
+                    .ToList()
             };
         }
     }

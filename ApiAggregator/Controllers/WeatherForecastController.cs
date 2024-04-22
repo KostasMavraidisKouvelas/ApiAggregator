@@ -1,6 +1,8 @@
 using System.Runtime.CompilerServices;
 using ApiAggregator.Application;
+using ApiAggregator.Application.Filters;
 using Microsoft.AspNetCore.Mvc;
+using static ApiAggregator.Application.Filters.AggregatorDataFilter;
 
 namespace ApiAggregator.Controllers
 {
@@ -20,9 +22,9 @@ namespace ApiAggregator.Controllers
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get([FromQuery] AggregatorDataFilter aggregatorDataFilter)
         {
-            return Ok(await _operations.GetAggregatedDataAsync());
+            return Ok(await _operations.GetAggregatedDataAsync(aggregatorDataFilter));
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ApiAggregator.Application.Filters;
 using ApiAggregator.DTO;
 
 namespace ApiAggregator.Application
@@ -13,8 +14,8 @@ namespace ApiAggregator.Application
 
         public Task<NewsResponseDto> GetNewsAsync();
 
-        public Task<List<CountryDto>> GetCountriesAsync();
+        public Task<IEnumerable<CountryDto>> GetCountriesAsync();
 
-        public Task<AggregatorDto> GetAggregatedDataAsync();
+        public Task<AggregatorDto> GetAggregatedDataAsync(AggregatorDataFilter aggregatorDataFilter);
     }
 }

@@ -10,6 +10,8 @@ namespace ApiAggregator.DTO
     {
         public FlagsDto Flags { get; set; }
         public NameDto Name { get; set; }
+        public string Region { get; set; }
+        public string SubRegion { get; set; }
     }
     public class FlagsDto
     {
