@@ -10,7 +10,7 @@ namespace ApiAggregator.DTO
     {
         public string Status { get; set; }
         public int ToTalResults { get; set; }
-        public List<ArticlesDto> Articles { get; set; }
+        public IEnumerable<ArticlesDto> Articles { get; set; }
     }
 
     public class ArticlesDto

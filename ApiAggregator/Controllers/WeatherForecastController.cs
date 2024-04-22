@@ -18,7 +18,6 @@ namespace ApiAggregator.Controllers
         {
             _logger = logger;
             _operations = operations;
-
         }
 
         [HttpGet(Name = "GetWeatherForecast")]

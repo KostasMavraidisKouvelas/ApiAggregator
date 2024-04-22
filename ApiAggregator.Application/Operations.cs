@@ -24,10 +24,28 @@ namespace ApiAggregator.Application
 
         public async Task<NewsResponseDto> GetNewsAsync()
         {
-            var response = await _httpClient.GetAsync("https://newsapi.org/v2/everything?q=tesla&from=2024-03-22&sortBy=publishedAt&apiKey=89ab964822464fba93a0025f8cfd7948");
-            var json = await response.Content.ReadAsStringAsync();
-            var news = JsonConvert.DeserializeObject<NewsResponseDto>(json);
-            return news;
+            HttpResponseMessage response;
+            string json;
+            NewsResponseDto news;
+
+            int retryCount = 0;
+            while (retryCount < 3)
+            {
+                response = await _httpClient.GetAsync("https://newsapi.org/v2/everything?q=tesla&from=2024-03-22&sortBy=publishedAt&apiKey=89ab964822464fba93a0025f8cfd7948");
+                if (response.IsSuccessStatusCode)
+                {
+                    json = await response.Content.ReadAsStringAsync();
+                    news = JsonConvert.DeserializeObject<NewsResponseDto>(json);
+                    return news;
+                }
+                else
+                {
+                    await Task.Delay(retryCount*1000); // Wait for 1 second before retrying
+                    retryCount++;
+                }
+            }
+
+            return null;
         }
 
         public async Task<IEnumerable<CountryDto>> GetCountriesAsync()
@@ -47,7 +65,10 @@ namespace ApiAggregator.Application
             await Task.WhenAll(weatherRersponse, newsResponse,countriesResponse);
             return new AggregatorDto
             {
-                Articles = newsResponse.Result.Articles,
+                Articles = newsResponse.Result.Articles.
+                    FilterNewsBy(aggregatorDataFilter.NewsFilter)
+                    .SortNewsBy(aggregatorDataFilter.NewsFilter.NewsSortBy)
+                    .ToList(),
                 WeatheForecasts = weatherRersponse.Result.List,
                 CountryDto = countriesResponse.Result.
                     FilterCountriesBy(aggregatorDataFilter.CountriesFilter)
