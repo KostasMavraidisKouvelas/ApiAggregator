@@ -7,21 +7,37 @@ namespace ApiAggregator.Application
     public class Operations : IOperations
     {
         private HttpClient _httpClient;
+        private const int maxRetryCount = 3;
 
         public Operations(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }
 
-
-        protected virtual async Task<WeatherResponseDto>  GetWeatherAsync()
+        protected virtual async Task<WeatherResponseDto> GetWeatherAsync()
         {
             HttpResponseMessage response;
             string json;
-            response = await _httpClient.GetAsync("http://api.openweathermap.org/data/2.5/forecast?lat=44.34&lon=10.99&appid=e5dcaa673b9fa708fdbb48a6cbe10e28");
-            json = await response.Content.ReadAsStringAsync();
-            var weatherForecast = JsonConvert.DeserializeObject<WeatherResponseDto>(json);
-            return weatherForecast;
+            WeatherResponseDto weatherForecast;
+
+            int retryCount = 0;
+            while (retryCount < maxRetryCount)
+            {
+                response = await _httpClient.GetAsync("http://api.openweathermap.org/data/2.5/forecast?lat=44.34&lon=10.99&appid=e5dcaa673b9fa708fdbb48a6cbe10e28");
+                if (response.IsSuccessStatusCode)
+                {
+                    json = await response.Content.ReadAsStringAsync();
+                    weatherForecast = JsonConvert.DeserializeObject<WeatherResponseDto>(json);
+                    return weatherForecast;
+                }
+                else
+                {
+                    await Task.Delay(1000); // Wait for 1 second before retrying
+                    retryCount++;
+                }
+            }
+
+            return null;
         }
 
         protected virtual async Task<NewsResponseDto> GetNewsAsync()
@@ -31,7 +47,7 @@ namespace ApiAggregator.Application
             NewsResponseDto news;
 
             int retryCount = 0;
-            while (retryCount < 3)
+            while (retryCount < maxRetryCount)
             {
                 response = await _httpClient.GetAsync("https://newsapi.org/v2/everything?q=tesla&from=2024-03-22&sortBy=publishedAt&apiKey=89ab964822464fba93a0025f8cfd7948");
                 if (response.IsSuccessStatusCode)
@@ -42,7 +58,7 @@ namespace ApiAggregator.Application
                 }
                 else
                 {
-                    await Task.Delay(retryCount*1000); // Wait for 1 second before retrying
+                    await Task.Delay(1000); // Wait for 1 second before retrying
                     retryCount++;
                 }
             }
@@ -52,19 +68,37 @@ namespace ApiAggregator.Application
 
         protected virtual async Task<IEnumerable<CountryDto>> GetCountriesAsync()
         {
-            var response = await _httpClient.GetAsync("https://restcountries.com/v3.1/all");
-            var json = await response.Content.ReadAsStringAsync();
-            var countries = JsonConvert.DeserializeObject<IEnumerable<CountryDto>>(json);
-            return countries;
+            HttpResponseMessage response;
+            string json;
+            IEnumerable<CountryDto> countries;
+
+            int retryCount = 0;
+            while (retryCount < maxRetryCount)
+            {
+                response = await _httpClient.GetAsync("https://restcountries.com/v3.1/all");
+                if (response.IsSuccessStatusCode)
+                {
+                    json = await response.Content.ReadAsStringAsync();
+                    countries = JsonConvert.DeserializeObject<IEnumerable<CountryDto>>(json);
+                    return countries;
+                }
+                else
+                {
+                    await Task.Delay(1000); // Wait for 1 second before retrying
+                    retryCount++;
+                }
+            }
+
+            return null;
         }
 
         public async Task<AggregatorDto> GetAggregatedDataAsync(AggregatorDataFilter aggregatorDataFilter)
         {
-            var weatherRersponse =  this.GetWeatherAsync();
-            var newsResponse =  this.GetNewsAsync();
-            var countriesResponse =  this.GetCountriesAsync();
+            var weatherRersponse = this.GetWeatherAsync();
+            var newsResponse = this.GetNewsAsync();
+            var countriesResponse = this.GetCountriesAsync();
 
-            await Task.WhenAll(weatherRersponse, newsResponse,countriesResponse);
+            await Task.WhenAll(weatherRersponse, newsResponse, countriesResponse);
             return new AggregatorDto
             {
                 Articles = newsResponse.Result.Articles.
