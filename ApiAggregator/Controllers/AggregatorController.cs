@@ -8,19 +8,19 @@ namespace ApiAggregator.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    public class AggregatorController : ControllerBase
     {
         private readonly IOperations _operations;
 
-        private readonly ILogger<WeatherForecastController> _logger;
+        private readonly ILogger<AggregatorController> _logger;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger,IOperations operations)
+        public AggregatorController(ILogger<AggregatorController> logger,IOperations operations)
         {
             _logger = logger;
             _operations = operations;
         }
 
-        [HttpGet(Name = "GetWeatherForecast")]
+        [HttpGet(Name = "GetAggregatorData")]
         public async Task<IActionResult> Get([FromQuery] AggregatorDataFilter aggregatorDataFilter)
         {
             return Ok(await _operations.GetAggregatedDataAsync(aggregatorDataFilter));
