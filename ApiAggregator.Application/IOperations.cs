@@ -10,12 +10,6 @@ namespace ApiAggregator.Application
 {
     public interface IOperations
     {
-        public Task<WeatherResponseDto> GetWeatherAsync();
-
-        public Task<NewsResponseDto> GetNewsAsync();
-
-        public Task<IEnumerable<CountryDto>> GetCountriesAsync();
-
         public Task<AggregatorDto> GetAggregatedDataAsync(AggregatorDataFilter aggregatorDataFilter);
     }
 }
