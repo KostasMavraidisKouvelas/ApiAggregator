@@ -115,7 +115,7 @@ namespace ApiAggregator.Application.Filters
                 case NewsFilterByOptions.ByAuthor:
                     return news.Where(n => n.Author == filter.FilterValue);
                 case NewsFilterByOptions.ByTitle:
-                    return news.Where(n => n.Title == filter.FilterValue);
+                    return news.Where(n => n.Title.Contains(filter.FilterValue));
                 default:
                     return news;
             }
