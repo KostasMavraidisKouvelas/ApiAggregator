@@ -3,17 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34316.72
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiAggregator.Api", "ApiAggregator\ApiAggregator.Api.csproj", "{0E9102BB-EF2D-44BD-8CE5-7035EE5AF335}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiAggregator.Api", "ApiAggregator\ApiAggregator.Api.csproj", "{0E9102BB-EF2D-44BD-8CE5-7035EE5AF335}"
 	ProjectSection(ProjectDependencies) = postProject
 		{17D3DAFE-481D-45F6-9263-434C39ED5A9C} = {17D3DAFE-481D-45F6-9263-434C39ED5A9C}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiAggregator.Application", "ApiAggregator.Application\ApiAggregator.Application.csproj", "{17D3DAFE-481D-45F6-9263-434C39ED5A9C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiAggregator.Application", "ApiAggregator.Application\ApiAggregator.Application.csproj", "{17D3DAFE-481D-45F6-9263-434C39ED5A9C}"
 	ProjectSection(ProjectDependencies) = postProject
 		{0D275008-E157-4022-A27D-D91CBACB4F81} = {0D275008-E157-4022-A27D-D91CBACB4F81}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiAggregator.DTO", "ApiAggregator.DTO\ApiAggregator.DTO.csproj", "{0D275008-E157-4022-A27D-D91CBACB4F81}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiAggregator.DTO", "ApiAggregator.DTO\ApiAggregator.DTO.csproj", "{0D275008-E157-4022-A27D-D91CBACB4F81}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiAggregator.Unit.Test", "ApiAggregator.Unit.Test\ApiAggregator.Unit.Test.csproj", "{97772FF5-6DD5-455E-AD4B-A05696EA1B4D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{0D275008-E157-4022-A27D-D91CBACB4F81}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D275008-E157-4022-A27D-D91CBACB4F81}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D275008-E157-4022-A27D-D91CBACB4F81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97772FF5-6DD5-455E-AD4B-A05696EA1B4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97772FF5-6DD5-455E-AD4B-A05696EA1B4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97772FF5-6DD5-455E-AD4B-A05696EA1B4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97772FF5-6DD5-455E-AD4B-A05696EA1B4D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

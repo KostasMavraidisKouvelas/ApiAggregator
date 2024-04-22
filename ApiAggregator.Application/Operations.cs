@@ -14,15 +14,17 @@ namespace ApiAggregator.Application
         }
 
 
-        private async Task<WeatherResponseDto>  GetWeatherAsync()
+        protected virtual async Task<WeatherResponseDto>  GetWeatherAsync()
         {
-            var response = await _httpClient.GetAsync("http://api.openweathermap.org/data/2.5/forecast?lat=44.34&lon=10.99&appid=e5dcaa673b9fa708fdbb48a6cbe10e28");
-            var json = await response.Content.ReadAsStringAsync();
+            HttpResponseMessage response;
+            string json;
+            response = await _httpClient.GetAsync("http://api.openweathermap.org/data/2.5/forecast?lat=44.34&lon=10.99&appid=e5dcaa673b9fa708fdbb48a6cbe10e28");
+            json = await response.Content.ReadAsStringAsync();
             var weatherForecast = JsonConvert.DeserializeObject<WeatherResponseDto>(json);
             return weatherForecast;
         }
 
-        private async Task<NewsResponseDto> GetNewsAsync()
+        protected virtual async Task<NewsResponseDto> GetNewsAsync()
         {
             HttpResponseMessage response;
             string json;
@@ -48,7 +50,7 @@ namespace ApiAggregator.Application
             return null;
         }
 
-        private async Task<IEnumerable<CountryDto>> GetCountriesAsync()
+        protected virtual async Task<IEnumerable<CountryDto>> GetCountriesAsync()
         {
             var response = await _httpClient.GetAsync("https://restcountries.com/v3.1/all");
             var json = await response.Content.ReadAsStringAsync();
