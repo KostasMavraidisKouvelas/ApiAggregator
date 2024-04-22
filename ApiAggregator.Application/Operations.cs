@@ -1,4 +1,5 @@
-﻿using ApiAggregator.Application.Filters;
+﻿using System.Runtime.InteropServices.JavaScript;
+using ApiAggregator.Application.Filters;
 using ApiAggregator.DTO;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -8,10 +9,10 @@ namespace ApiAggregator.Application
     public class Operations : IOperations
     {
         private HttpClient _httpClient;
-        private readonly  IConfiguration _configuration;
+        private readonly IConfiguration _configuration;
         private const int maxRetryCount = 3;
 
-        public Operations(HttpClient httpClient,IConfiguration configuration)
+        public Operations(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
             _configuration = configuration;
@@ -26,11 +27,13 @@ namespace ApiAggregator.Application
             HttpResponseMessage response;
             string json;
             WeatherResponseDto weatherForecast;
+            var apiKey = _configuration["Weather:ApiKey"];
+            var weatherUrl = _configuration["Weather:WeatherUrl"];
 
             int retryCount = 0;
             while (retryCount < maxRetryCount)
             {
-                response = await _httpClient.GetAsync("http://api.openweathermap.org/data/2.5/forecast?lat=44.34&lon=10.99&appid=e5dcaa673b9fa708fdbb48a6cbe10e28");
+                response = await _httpClient.GetAsync($"{weatherUrl}&appid={apiKey}");
                 if (response.IsSuccessStatusCode)
                 {
                     json = await response.Content.ReadAsStringAsync();
@@ -52,11 +55,16 @@ namespace ApiAggregator.Application
             HttpResponseMessage response;
             string json;
             NewsResponseDto news;
-
+            //var newUrl = _configuration["NewsUrl"];
+            //var apiKey = _configuration["ApiKey"];
+            var apiKey = _configuration["News:ApiKey"];
+            var newsUrl = _configuration["News:NewsUrl"];
             int retryCount = 0;
             while (retryCount < maxRetryCount)
             {
-                response = await _httpClient.GetAsync("https://newsapi.org/v2/everything?q=tesla&from=2024-03-22&sortBy=publishedAt&apiKey=89ab964822464fba93a0025f8cfd7948");
+                //response = await _httpClient.GetAsync($"{newsUrl}from=2024-03-22&sortBy=publishedAt&apiKey={apiKey}");
+                response = await _httpClient.GetAsync(
+                    $"{newsUrl}?q=tesla&from={DateTime.Now.AddDays(-3).ToString("yyyy-MM-dd")}&apiKey={apiKey}");
                 if (response.IsSuccessStatusCode)
                 {
                     json = await response.Content.ReadAsStringAsync();
@@ -82,7 +90,8 @@ namespace ApiAggregator.Application
             int retryCount = 0;
             while (retryCount < maxRetryCount)
             {
-                response = await _httpClient.GetAsync("https://restcountries.com/v3.1/all");
+                var countriesUrl = _configuration["countriesUrl"];
+                response = await _httpClient.GetAsync(countriesUrl);
                 if (response.IsSuccessStatusCode)
                 {
                     json = await response.Content.ReadAsStringAsync();
@@ -108,14 +117,14 @@ namespace ApiAggregator.Application
             await Task.WhenAll(weatherRersponse, newsResponse, countriesResponse);
             return new AggregatorDto
             {
-                Articles = newsResponse.Result.Articles.
-                    FilterNewsBy(aggregatorDataFilter.NewsFilter)
-                    .SortNewsBy(aggregatorDataFilter.NewsFilter.NewsSortBy)
+                Articles = newsResponse.Result?.Articles?.
+                    FilterNewsBy(aggregatorDataFilter?.NewsFilter)?
+                    .SortNewsBy(aggregatorDataFilter?.NewsFilter?.NewsSortBy)?
                     .ToList(),
-                WeatheForecasts = weatherRersponse.Result.List,
-                CountryDto = countriesResponse.Result.
-                    FilterCountriesBy(aggregatorDataFilter.CountriesFilter)
-                    .SortCountriesBy(aggregatorDataFilter.CountriesFilter.CountriesSortBy)
+                WeatheForecasts = weatherRersponse?.Result?.List,
+                CountryDto = countriesResponse.Result?.
+                    FilterCountriesBy(aggregatorDataFilter?.CountriesFilter)?
+                    .SortCountriesBy(aggregatorDataFilter?.CountriesFilter?.CountriesSortBy)?
                     .ToList()
             };
         }

@@ -61,7 +61,7 @@ namespace ApiAggregator.Application.Filters
 
     public static class CountriesFilterSortOrder
     {
-        public static IEnumerable<CountryDto> SortCountriesBy(this IEnumerable<CountryDto> countries, CountriesOrderByOptions orderBy)
+        public static IEnumerable<CountryDto> SortCountriesBy(this IEnumerable<CountryDto> countries, CountriesOrderByOptions ?orderBy)
         {
             switch (orderBy)
             {
@@ -77,7 +77,7 @@ namespace ApiAggregator.Application.Filters
         public static IEnumerable<CountryDto> FilterCountriesBy(this IEnumerable<CountryDto> countries,
             CountriesFilter filter)
         {
-            switch (filter.CountriesFilterBy)
+            switch (filter?.CountriesFilterBy)
             {
                 case CountriesFilterByOptions.ByRegion:
                     return countries.Where(c => c.Region == filter.FilterValue);
@@ -92,7 +92,7 @@ namespace ApiAggregator.Application.Filters
     public static class NewsFilterSortOrder
     {
         public static IEnumerable<ArticlesDto> SortNewsBy(this IEnumerable<ArticlesDto> news,
-            NewsOrderByOptions orderBy)
+            NewsOrderByOptions? orderBy)
         {
             switch (orderBy)
             {
@@ -108,7 +108,7 @@ namespace ApiAggregator.Application.Filters
         public static IEnumerable<ArticlesDto> FilterNewsBy(this IEnumerable<ArticlesDto> news,
             NewsFilter filter)
         {
-            switch (filter.NewsFilterBy)
+            switch (filter?.NewsFilterBy)
             {
                 case NewsFilterByOptions.BySource:
                     return news.Where(n => n.Source.Name == filter.FilterValue);
